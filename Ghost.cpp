@@ -31,3 +31,8 @@ Vector2 Ghost::createRandomDisplacement()
     v.y = (test) ? 0.0f : 1.0f;
     return Vector2Scale(v, (rand() % 2) ? 1.0f : -1.0f);
 }
+
+void Ghost::updateDirection(const Vector2 displacement)
+{
+    direction = (displacement.x < 0) ? -1 : 1;
+}

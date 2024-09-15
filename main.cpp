@@ -8,8 +8,10 @@
 const int WINDOW_HEIGHT = 600;
 const int WINDOW_WIDTH = 800;
 const Color WALL_COLOR = BLUE;
+const Color TEXT_COLOR = GREEN;
 
 Vector2 handle_keyboard_movement();
+bool didPacDie(Rectangle pacBoundingBox, Rectangle threatBoundingBox);
 
 int main()
 {
@@ -21,22 +23,24 @@ int main()
     board->createLayout1();
 
     PacWoman *pac = new PacWoman();
-    Ghost * ghost = new Ghost();
+    Ghost *ghost = new Ghost();
 
     Vector2 ghostPositionDisplacement{1.0f, 0.0f};
     Vector2 pacPositionDisplacement{0.0f, 0.0f};
 
-    while (!WindowShouldClose())
+    bool gameEnded = false;
+
+    while (!WindowShouldClose() && !gameEnded)
     {
         BeginDrawing();
         ClearBackground(BLACK);
 
         float deltaTime = GetFrameTime();
 
-        //Board
+        // Board
         board->draw(WALL_COLOR);
 
-        //Pac
+        // Pac
         pac->draw();
         pac->updateFrame(deltaTime);
         pacPositionDisplacement = handle_keyboard_movement();
@@ -46,17 +50,25 @@ int main()
             pac->updatePosition(Vector2Negate(pacPositionDisplacement));
         pac->handleTeleport(WINDOW_WIDTH, WINDOW_HEIGHT);
 
-        //Ghost
+        // Ghost
         ghost->draw();
         ghost->updatePosition(ghostPositionDisplacement);
         ghost->updateDirection(ghostPositionDisplacement);
-        if (!board->isValidLocation(ghost->getBoundingBox())) {
+        if (!board->isValidLocation(ghost->getBoundingBox()))
+        {
             ghost->updatePosition(Vector2Negate(ghostPositionDisplacement));
             ghostPositionDisplacement = ghost->createRandomDisplacement();
         }
         ghost->handleTeleport(WINDOW_WIDTH, WINDOW_HEIGHT);
 
+        if ((gameEnded = didPacDie(pac->getBoundingBox(), ghost->getBoundingBox())) == true)
+        {
+            DrawText("GAME OVER! THREATS WON!", 200, 200, 30, TEXT_COLOR);
+        }
+
         EndDrawing();
+        if (gameEnded)
+            WaitTime(5);
     }
 
     return 0;
@@ -73,4 +85,9 @@ Vector2 handle_keyboard_movement()
     if (IsKeyDown(KEY_D))
         return Vector2{1.0f, 0.0f};
     return Vector2{0.0f, 0.0f};
+}
+
+bool didPacDie(Rectangle pacBoundingBox, Rectangle threatBoundingBox)
+{
+    return CheckCollisionRecs(pacBoundingBox, threatBoundingBox);
 }

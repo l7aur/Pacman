@@ -14,7 +14,7 @@ public:
     inline int getWidth() const { return this->width; };
     inline int getHeight() const {return this->height; };
     void handleTeleport(const int window_width, const int window_height);
-    void updateDirection(const Vector2 displacement);
+    virtual void updateDirection(const Vector2 displacement);
     virtual void updateFrame(const float deltaTime) = 0;
 protected:
     Texture2D texture{};

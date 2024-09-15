@@ -10,6 +10,7 @@ public:
     ~Ghost();
     virtual void updateFrame(const float deltaTime) override;
     Vector2 createRandomDisplacement();
+    void updateDirection(const Vector2 displacement) override;
 private:
 };
 
