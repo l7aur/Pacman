@@ -9,14 +9,13 @@ class BaseCharacter
 public:
     void draw() const;
     inline void updatePosition(Vector2 v) { position = Vector2Add(position, Vector2Scale(v, velocity)); };
-    virtual Rectangle getBoundingBox() const = 0;
+    Rectangle getBoundingBox() const;
     inline Vector2 getPosition() const { return this->position; };
     inline int getWidth() const { return this->width; };
     inline int getHeight() const {return this->height; };
     void handleTeleport(const int window_width, const int window_height);
     void updateDirection(const Vector2 displacement);
     virtual void updateFrame(const float deltaTime) = 0;
-
 protected:
     Texture2D texture{};
     int frame{0};

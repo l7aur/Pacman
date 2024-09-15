@@ -23,6 +23,9 @@ int main()
     PacWoman *pac = new PacWoman();
     Ghost * ghost = new Ghost();
 
+    Vector2 ghostPositionDisplacement{1.0f, 0.0f};
+    Vector2 pacPositionDisplacement{0.0f, 0.0f};
+
     while (!WindowShouldClose())
     {
         BeginDrawing();
@@ -36,7 +39,7 @@ int main()
         //Pac
         pac->draw();
         pac->updateFrame(deltaTime);
-        Vector2 pacPositionDisplacement = handle_keyboard_movement();
+        pacPositionDisplacement = handle_keyboard_movement();
         pac->updatePosition(pacPositionDisplacement);
         pac->updateDirection(pacPositionDisplacement);
         if (!board->isValidLocation(pac->getBoundingBox()))
@@ -45,6 +48,13 @@ int main()
 
         //Ghost
         ghost->draw();
+        ghost->updatePosition(ghostPositionDisplacement);
+        ghost->updateDirection(ghostPositionDisplacement);
+        if (!board->isValidLocation(ghost->getBoundingBox())) {
+            ghost->updatePosition(Vector2Negate(ghostPositionDisplacement));
+            ghostPositionDisplacement = ghost->createRandomDisplacement();
+        }
+        ghost->handleTeleport(WINDOW_WIDTH, WINDOW_HEIGHT);
 
         EndDrawing();
     }

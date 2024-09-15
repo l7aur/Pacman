@@ -7,6 +7,7 @@ Ghost::Ghost()
     width = texture.width;
     height = texture.height;
     scale = 0.25f;
+    position = {200.0f, 200.0f};
 }
 
 Ghost::~Ghost()
@@ -17,9 +18,16 @@ Ghost::~Ghost()
 void Ghost::updateFrame(const float deltaTime)
 {
     frame = 0;
+    frameRunningTime += deltaTime;
+    if(frameRunningTime > maximumFrameTime)
+        frameRunningTime = 0.0f;
 }
 
-Rectangle Ghost::getBoundingBox() const
+Vector2 Ghost::createRandomDisplacement()
 {
-    return Rectangle{};
+    Vector2 v = {0.0f, 0.0f};
+    int test = rand() % 2;
+    v.x = (test) ? 1.0f : 0.0f;
+    v.y = (test) ? 0.0f : 1.0f;
+    return Vector2Scale(v, (rand() % 2) ? 1.0f : -1.0f);
 }

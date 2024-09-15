@@ -9,7 +9,7 @@ public:
     Ghost();
     ~Ghost();
     virtual void updateFrame(const float deltaTime) override;
-    virtual Rectangle getBoundingBox() const override;
+    Vector2 createRandomDisplacement();
 private:
 };
 

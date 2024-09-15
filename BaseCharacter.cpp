@@ -10,6 +10,12 @@ void BaseCharacter::draw() const
                    WHITE);
 }
 
+Rectangle BaseCharacter::getBoundingBox() const
+{
+    DrawRectangleLines(position.x - static_cast<float>(width) * scale / 2, position.y - static_cast<float>(height) * scale / 2, static_cast<float>(width) * scale, static_cast<float>(height) * scale, RED);
+    return Rectangle{position.x - static_cast<float>(width) * scale / 2, position.y - static_cast<float>(height) * scale / 2, static_cast<float>(width) * scale, static_cast<float>(height) * scale};
+}
+
 void BaseCharacter::handleTeleport(const int window_width, const int window_height)
 {
     Vector2 currentPosition = position;
