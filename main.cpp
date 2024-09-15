@@ -9,9 +9,10 @@ const int WINDOW_HEIGHT = 600;
 const int WINDOW_WIDTH = 800;
 const Color WALL_COLOR = BLUE;
 const Color TEXT_COLOR = GREEN;
+const int GHOST_NUMBER = 4;
 
 Vector2 handle_keyboard_movement();
-bool didPacDie(Rectangle pacBoundingBox, Rectangle threatBoundingBox);
+bool didPacDie(PacWoman *main, Ghost *threats[]);
 
 int main()
 {
@@ -20,15 +21,22 @@ int main()
     SetTargetFPS(120);
 
     Board *board = new Board(WINDOW_WIDTH, WINDOW_HEIGHT);
-    board->createLayout1();
 
     PacWoman *pac = new PacWoman();
-    Ghost *ghost = new Ghost();
+    Ghost *ghost[GHOST_NUMBER];
 
-    Vector2 ghostPositionDisplacement{1.0f, 0.0f};
+    Vector2 ghostPositionDisplacement[GHOST_NUMBER];
     Vector2 pacPositionDisplacement{0.0f, 0.0f};
 
     bool gameEnded = false;
+    
+    board->createLayout1();
+    for (int i = 0; i < GHOST_NUMBER; i++)
+    {
+        ghost[i] = new Ghost();
+        ghostPositionDisplacement[i] = ghost[i]->createRandomDisplacement();
+    }
+    
 
     while (!WindowShouldClose() && !gameEnded)
     {
@@ -51,17 +59,19 @@ int main()
         pac->handleTeleport(WINDOW_WIDTH, WINDOW_HEIGHT);
 
         // Ghost
-        ghost->draw();
-        ghost->updatePosition(ghostPositionDisplacement);
-        ghost->updateDirection(ghostPositionDisplacement);
-        if (!board->isValidLocation(ghost->getBoundingBox()))
+        for (int i = 0; i < GHOST_NUMBER; i++)
         {
-            ghost->updatePosition(Vector2Negate(ghostPositionDisplacement));
-            ghostPositionDisplacement = ghost->createRandomDisplacement();
+            ghost[i]->draw();
+            ghost[i]->updatePosition(ghostPositionDisplacement[i]);
+            ghost[i]->updateDirection(ghostPositionDisplacement[i]);
+            if (!board->isValidLocation(ghost[i]->getBoundingBox()))
+            {
+                ghost[i]->updatePosition(Vector2Negate(ghostPositionDisplacement[i]));
+                ghostPositionDisplacement[i] = ghost[i]->createRandomDisplacement();
+            }
+            ghost[i]->handleTeleport(WINDOW_WIDTH, WINDOW_HEIGHT);
         }
-        ghost->handleTeleport(WINDOW_WIDTH, WINDOW_HEIGHT);
-
-        if ((gameEnded = didPacDie(pac->getBoundingBox(), ghost->getBoundingBox())) == true)
+        if ((gameEnded = didPacDie(pac, ghost)) == true)
         {
             DrawText("GAME OVER! THREATS WON!", 200, 200, 30, TEXT_COLOR);
         }
@@ -87,7 +97,11 @@ Vector2 handle_keyboard_movement()
     return Vector2{0.0f, 0.0f};
 }
 
-bool didPacDie(Rectangle pacBoundingBox, Rectangle threatBoundingBox)
+bool didPacDie(PacWoman *main, Ghost *threats[])
 {
-    return CheckCollisionRecs(pacBoundingBox, threatBoundingBox);
+    Rectangle r = main->getBoundingBox();
+    for (int i = 0; i < GHOST_NUMBER; i++)
+        if (CheckCollisionRecs(r, threats[i]->getBoundingBox()) == true)
+            return true;
+    return false;
 }
