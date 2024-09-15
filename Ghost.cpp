@@ -6,8 +6,7 @@ Ghost::Ghost()
     numberOfFrames = 1;
     width = texture.width;
     height = texture.height;
-    scale = 0.25f;
-    position = {200.0f, 200.0f};
+    scale = 0.23f;
 }
 
 Ghost::~Ghost()

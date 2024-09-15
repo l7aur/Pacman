@@ -29,14 +29,18 @@ int main()
     Vector2 pacPositionDisplacement{0.0f, 0.0f};
 
     bool gameEnded = false;
-    
+
     board->createLayout1();
     for (int i = 0; i < GHOST_NUMBER; i++)
     {
         ghost[i] = new Ghost();
         ghostPositionDisplacement[i] = ghost[i]->createRandomDisplacement();
     }
-    
+
+    ghost[0]->setPosition(Vector2{230.0f, 95.0f});
+    ghost[1]->setPosition(Vector2{250.0f, 350.0f});
+    ghost[2]->setPosition(Vector2{100.0f, 450.0f});
+    ghost[3]->setPosition(Vector2{640.0f, 415.0f});
 
     while (!WindowShouldClose() && !gameEnded)
     {
@@ -58,7 +62,7 @@ int main()
             pac->updatePosition(Vector2Negate(pacPositionDisplacement));
         pac->handleTeleport(WINDOW_WIDTH, WINDOW_HEIGHT);
 
-        // Ghost
+        // Ghosts
         for (int i = 0; i < GHOST_NUMBER; i++)
         {
             ghost[i]->draw();
@@ -71,10 +75,12 @@ int main()
             }
             ghost[i]->handleTeleport(WINDOW_WIDTH, WINDOW_HEIGHT);
         }
-        if ((gameEnded = didPacDie(pac, ghost)) == true)
-        {
-            DrawText("GAME OVER! THREATS WON!", 200, 200, 30, TEXT_COLOR);
-        }
+
+        // End condition
+        // if ((gameEnded = didPacDie(pac, ghost)) == true)
+        // {
+        //     DrawText("GAME OVER! THREATS WON!", 200, 200, 30, TEXT_COLOR);
+        // }
 
         EndDrawing();
         if (gameEnded)
@@ -86,15 +92,16 @@ int main()
 
 Vector2 handle_keyboard_movement()
 {
+    Vector2 v{0.0f, 0.0f};
     if (IsKeyDown(KEY_W))
-        return Vector2{0.0f, -1.0f};
+        v.y -= 1.0f;
     if (IsKeyDown(KEY_S))
-        return Vector2{0.0f, 1.0f};
+        v.y += 1.0f;
     if (IsKeyDown(KEY_A))
-        return Vector2{-1.0f, 0.0f};
+        v.x -= 1.0f;
     if (IsKeyDown(KEY_D))
-        return Vector2{1.0f, 0.0f};
-    return Vector2{0.0f, 0.0f};
+        v.x += 1.0f;
+    return v;
 }
 
 bool didPacDie(PacWoman *main, Ghost *threats[])

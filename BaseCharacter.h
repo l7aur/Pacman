@@ -16,6 +16,7 @@ public:
     void handleTeleport(const int window_width, const int window_height);
     virtual void updateDirection(const Vector2 displacement);
     virtual void updateFrame(const float deltaTime) = 0;
+    inline void setPosition(Vector2 v) { this->position = v; };
 protected:
     Texture2D texture{};
     int frame{0};
