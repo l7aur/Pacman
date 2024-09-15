@@ -10,3 +10,7 @@
 ## maybes
 
 - decompose movement vector in 2 based on directions so that pac can slide on walls
+
+## Assets
+
+- https://vladpenn.itch.io/pacman

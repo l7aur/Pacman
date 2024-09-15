@@ -1,15 +1,6 @@
-#include "PacWoman.h"
+#include "BaseCharacter.h"
 
-PacWoman::PacWoman()
-{
-}
-
-PacWoman::~PacWoman()
-{
-    UnloadTexture(texture);
-}
-
-void PacWoman::draw() const
+void BaseCharacter::draw() const
 {
     DrawTexturePro(texture,
                    Rectangle{static_cast<float>(width * frame), static_cast<float>(height), static_cast<float>(direction * width), static_cast<float>(height)},
@@ -19,12 +10,7 @@ void PacWoman::draw() const
                    WHITE);
 }
 
-Rectangle PacWoman::getBoundingBox() const
-{
-    return Rectangle{position.x, position.y, static_cast<float>(width), static_cast<float>(height)};
-}
-
-void PacWoman::handleTeleport(const int window_width, const int window_height)
+void BaseCharacter::handleTeleport(const int window_width, const int window_height)
 {
     Vector2 currentPosition = position;
     const float PADDING = 2.0f;
@@ -39,7 +25,7 @@ void PacWoman::handleTeleport(const int window_width, const int window_height)
         position = Vector2{currentPosition.x, -height + PADDING};
 }
 
-void PacWoman::updateDirection(const Vector2 displacement)
+void BaseCharacter::updateDirection(const Vector2 displacement)
 {
     if (displacement.x > 0)
     {
@@ -60,15 +46,5 @@ void PacWoman::updateDirection(const Vector2 displacement)
     {
         direction = 1;
         rotation = -90.0f;
-    }
-}
-
-void PacWoman::updateFrame(const float deltaTime)
-{
-    frameRunningTime += deltaTime;
-    if (frameRunningTime >= maximumFrameTime)
-    {
-        frame = (frame + 1) % numberOfFrames;
-        frameRunningTime = 0.0f;
     }
 }
