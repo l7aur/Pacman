@@ -4,15 +4,22 @@
 #include "Board.h"
 #include "PacWoman.h"
 #include "Ghost.h"
+#include "Coin.h"
 
 const int WINDOW_HEIGHT = 600;
 const int WINDOW_WIDTH = 800;
 const Color WALL_COLOR = BLUE;
 const Color TEXT_COLOR = GREEN;
 const int GHOST_NUMBER = 4;
+const int SMALL_COIN_NUMBER = 2;
+enum {
+    SMALL_COIN,
+    BIG_COIN
+};
 
 Vector2 handle_keyboard_movement();
 bool didPacDie(PacWoman *main, Ghost *threats[]);
+void place_coins(Coin *coins[]);
 
 int main()
 {
@@ -24,6 +31,7 @@ int main()
 
     PacWoman *pac = new PacWoman();
     Ghost *ghost[GHOST_NUMBER];
+    Coin *coin[SMALL_COIN_NUMBER];
 
     Vector2 ghostPositionDisplacement[GHOST_NUMBER];
     Vector2 pacPositionDisplacement{0.0f, 0.0f};
@@ -41,6 +49,8 @@ int main()
     ghost[1]->setPosition(Vector2{250.0f, 350.0f});
     ghost[2]->setPosition(Vector2{100.0f, 450.0f});
     ghost[3]->setPosition(Vector2{640.0f, 415.0f});
+
+    place_coins(coin);
 
     while (!WindowShouldClose() && !gameEnded)
     {
@@ -74,6 +84,12 @@ int main()
                 ghostPositionDisplacement[i] = ghost[i]->createRandomDisplacement();
             }
             ghost[i]->handleTeleport(WINDOW_WIDTH, WINDOW_HEIGHT);
+        }
+
+        // Coins
+        for(int i = 0; i<SMALL_COIN_NUMBER; i++) {
+            coin[i]->draw();
+            coin[i]->updateFrame(deltaTime);
         }
 
         // End condition
@@ -111,4 +127,10 @@ bool didPacDie(PacWoman *main, Ghost *threats[])
         if (CheckCollisionRecs(r, threats[i]->getBoundingBox()) == true)
             return true;
     return false;
+}
+
+void place_coins(Coin *coins[])
+{
+    coins[0] = new Coin(SMALL_COIN, {30.0f, 30.0f});
+    coins[1] = new Coin(BIG_COIN, {100.0f, 30.0f});
 }

@@ -2,17 +2,18 @@
 
 void BaseCharacter::draw() const
 {
-    DrawTexturePro(texture,
-                   Rectangle{static_cast<float>(width * frame), static_cast<float>(height), static_cast<float>(direction * width), static_cast<float>(height)},
-                   Rectangle{position.x, position.y, static_cast<float>(scale * width), static_cast<float>(scale * height)},
-                   Vector2{static_cast<float>(width * scale) / 2, static_cast<float>(height * scale) / 2},
-                   rotation,
-                   WHITE);
+    DrawTexturePro(
+        texture,
+        Rectangle{static_cast<float>(width * frame), static_cast<float>(height), static_cast<float>(direction * width), static_cast<float>(height)},
+        Rectangle{position.x, position.y, static_cast<float>(scale * width), static_cast<float>(scale * height)},
+        Vector2{static_cast<float>(width * scale) / 2, static_cast<float>(height * scale) / 2},
+        rotation,
+        WHITE);
 }
 
 Rectangle BaseCharacter::getBoundingBox() const
 {
-    DrawRectangleLines(position.x - static_cast<float>(width) * scale / 2, position.y - static_cast<float>(height) * scale / 2, static_cast<float>(width) * scale, static_cast<float>(height) * scale, RED);
+    // DrawRectangleLines(position.x - static_cast<float>(width) * scale / 2, position.y - static_cast<float>(height) * scale / 2, static_cast<float>(width) * scale, static_cast<float>(height) * scale, RED);
     return Rectangle{position.x - static_cast<float>(width) * scale / 2, position.y - static_cast<float>(height) * scale / 2, static_cast<float>(width) * scale, static_cast<float>(height) * scale};
 }
 
