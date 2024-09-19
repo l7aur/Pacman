@@ -2,7 +2,7 @@
 
 Coin::Coin(const bool coinType, const Vector2 pos)
 {
-    scale = (coinType) ? 2.0f : 3.5f;
+    scale = (coinType) ? 3.5f : 2.0f;
     position = pos;
 }
 
