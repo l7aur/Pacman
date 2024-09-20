@@ -10,7 +10,9 @@ public:
     ~Coin();
     void draw() const;
     void updateFrame(const float deltaTime);
+    int getValue() const { return this->value; };
     Rectangle getBoundingBox() const;
+
 private:
     const Texture2D texture{LoadTexture("sprites\\BigCoin.png")};
     int frame{0};
@@ -19,6 +21,7 @@ private:
     Vector2 position{0.0f, 0.0f};
     float frameRunningTime{0.0f};
     const float maximumFrameTime{0.0625f};
+    int value{0};
 };
 
 #endif

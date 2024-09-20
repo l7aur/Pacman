@@ -1,9 +1,12 @@
 #include "Coin.h"
+#include <random>
 
 Coin::Coin(const bool coinType, const Vector2 pos)
 {
     scale = (coinType) ? 3.5f : 2.0f;
+    value = (coinType) ? 100 : 10;
     position = pos;
+    frame = rand() % 8;
 }
 
 Coin::~Coin()
@@ -38,6 +41,6 @@ Rectangle Coin::getBoundingBox() const
 {
     const int width = texture.width / numberOfFrames;
     const int height = texture.height;
-    DrawRectangleLines(position.x, position.y, static_cast<float>(width) * scale, static_cast<float>(height) * scale, RED);
+    // DrawRectangleLines(position.x, position.y, static_cast<float>(width) * scale, static_cast<float>(height) * scale, RED);
     return Rectangle{position.x, position.y, static_cast<float>(width) * scale, static_cast<float>(height) * scale};
 }
