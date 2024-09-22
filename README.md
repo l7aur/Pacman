@@ -2,7 +2,7 @@
 
 - level design
 
-# PacWoman
+# PacMan
 
 ## Table of contents
 
@@ -20,7 +20,7 @@
 
 ### Description
 
-**PacWoman** is a 2D game 
+**PacMan** is a 2D game 
 
 ### Player Controls
 
